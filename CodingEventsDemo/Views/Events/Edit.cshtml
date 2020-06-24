@@ -1,0 +1,13 @@
+﻿<h1>Edit Event</h1>
+
+<form method="post" action="/events/edit/@ViewBag.events.Id">
+    <input name="eventId" hidden value=@ViewBag.events.Id />
+    <input name="name" type="text" value="@ViewBag.events.Name"/>
+    <input name="description" type="text" value="@ViewBag.events.Description"/>
+    <input type="submit" value="Edit Event" />
+</form>
+
+
+@*
+    asp-controller="Events" asp-action="SubmitEditEventForm"
+*@

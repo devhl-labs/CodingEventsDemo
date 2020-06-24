@@ -1,15 +1,8 @@
 ﻿<h1>Coding Events</h1>
 
 <p>
-   <a asp-controller="Events" asp-action="Add">Add Event</a>    
+    <a asp-controller="Events" asp-action="Add">Add Event</a>
 </p>
-
-@*<ul>
-    @foreach (var meeting in ViewBag.events)
-    {
-        <li>@meeting.Key</li>
-    }
-</ul>*@
 
 <table>
     <tr>
@@ -17,12 +10,27 @@
         <th>Description</th>
     </tr>
 
-    @foreach (var entry in ViewBag.events)
+    @foreach (Event evnt in ViewBag.events)
     {
         <tr>
-            <td>@entry.Key</td>
-            <td>@entry.Value</td>
+            <td>@evnt.Name</td>
+            <td>@evnt.Description</td>
+            <td>
+                <a type="submit" class="btn btn-outline-primary btn-sm" asp-controller="Events" asp-action="Edit" asp-route-id="@evnt.Id">Edit</a>
+            </td>
+            <td>
+                <form method="post" asp-action="Delete">
+                    <input hidden name="eventIds" value=@evnt.Id />
+                    <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
+                </form>
+            </td>
         </tr>
     }
 
-    </table>
+</table>
+
+@*
+
+    href="/Events/Edit/@evnt.Id"
+    
+*@

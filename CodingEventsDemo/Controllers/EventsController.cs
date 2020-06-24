@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using CodingEventsDemo.Data;
+using CodingEventsDemo.Models;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,16 +13,9 @@ namespace coding_events_practice.Controllers
 {
     public class EventsController : Controller
     {
-        public static Dictionary<string, string> Events = new Dictionary<string, string>();
-
-        // GET: /<controller>/
         public IActionResult Index()
         {
-            Events.TryAdd("Code With Pride", "description 1");
-            Events.TryAdd("Apple WWDC", "description 2");
-            Events.TryAdd("Strange Loop", "description 3");
-
-            ViewBag.events = Events;
+            ViewBag.events = EventData.GetAll();
 
             return View();
         }
@@ -32,9 +27,47 @@ namespace coding_events_practice.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(string name, string description)
+        public IActionResult Add(Event newEvent)
         {
-            Events.TryAdd(name, description);
+            EventData.Add(newEvent);
+
+            return Redirect("/Events");
+        }
+
+        [Route("/Events/Edit/{eventId}")]
+        public IActionResult Edit(int eventId)
+        {
+            ViewBag.events = EventData.GetById(eventId);
+
+            return View();
+        }
+
+        [HttpPost("/Events/Edit/{eventId}")]
+        public IActionResult Edit(int eventId, string name, string description)
+        {
+            Event evnt = EventData.GetById(eventId);
+
+            evnt.Name = name;
+
+            evnt.Description = description;
+
+            return Redirect("/Events");
+        }
+
+        public IActionResult Delete()
+        {
+            ViewBag.events = EventData.GetAll();
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int[] eventIds)
+        {
+            foreach (int eventId in eventIds)
+            {
+                EventData.Remove(eventId);
+            }
 
             return Redirect("/Events");
         }
