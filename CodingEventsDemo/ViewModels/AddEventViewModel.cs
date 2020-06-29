@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using CodingEventsDemo.Models;
 
 namespace CodingEventsDemo.ViewModels
 {
@@ -15,5 +16,16 @@ namespace CodingEventsDemo.ViewModels
 
         [EmailAddress]
         public string ContactEmail { get; set; }
+
+        [Required(AllowEmptyStrings = false, ErrorMessage = "The location is required.")]
+        public string Location { get; set; }
+
+        [Range(0, 100000, ErrorMessage = "Valid values are from 0 to 100,000.")]
+        public int Attendees { get; set; }
+
+        public Event ToEvent()
+        {
+            return new Event(Name, Description, ContactEmail, Location, Attendees);
+        }
     }
 }

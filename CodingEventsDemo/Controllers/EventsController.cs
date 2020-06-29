@@ -31,21 +31,12 @@ namespace coding_events_practice.Controllers
         [HttpPost]
         public IActionResult Add(AddEventViewModel addEventViewModel)
         {
-            if (ModelState.IsValid)
-            {
-                Event newEvent = new Event
-                {
-                    Name = addEventViewModel.Name,
-                    Description = addEventViewModel.Description,
-                    ContactEmail = addEventViewModel.ContactEmail
-                };
+            if (ModelState.IsValid == false)
+                return View(addEventViewModel);
 
-                EventData.Add(newEvent);
+            EventData.Add(addEventViewModel.ToEvent());
 
-                return Redirect("/Events");
-            }
-
-            return View(addEventViewModel);
+            return Redirect("/Events");           
         }
 
         public IActionResult Delete()
